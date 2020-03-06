@@ -632,7 +632,7 @@ func (p *Parser) parseAttendee(attendeeData string) *Attendee {
 
 // parses the attendee email
 func (p *Parser) parseAttendeeMail(attendeeData string) string {
-	re, _ := regexp.Compile(`mailto:.*?\n`)
+	re, _ := regexp.Compile(`mailto:.*?\r?\n`)
 	result := re.FindString(attendeeData)
 	return trimField(result, "mailto:")
 }
