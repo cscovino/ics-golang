@@ -597,7 +597,7 @@ func (p *Parser) parseEventAttendees(eventData string) []*Attendee {
 		if attendeeData == "" {
 			continue
 		}
-		attendee := p.parseAttendee(strings.ReplaceAll(strings.ReplaceAll(attendeeData, "\r", "", 1), "\n ", "", 1))
+		attendee := p.parseAttendee(strings.ReplaceAll(strings.ReplaceAll(attendeeData, "\r", ""), "\n ", ""))
 		//  check for any fields set
 		if attendee.GetEmail() != "" || attendee.GetName() != "" || attendee.GetRole() != "" || attendee.GetStatus() != "" || attendee.GetType() != "" {
 			attendeesObj = append(attendeesObj, attendee)
