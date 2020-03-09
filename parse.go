@@ -510,6 +510,7 @@ func (p *Parser) parseTimeField(fieldName string, eventData string) (time.Time, 
 	if resultWholeDay != "" {
 		// whole day event
 		modified := trimField(resultWholeDay, fmt.Sprintf("%s;VALUE=DATE:", fieldName))
+		modified = strings.Replace(strings.Replace(modified, "\r", "", 1), "\n ", "", 1)
 		if !strings.Contains(modified, "Z") {
 			modified = fmt.Sprintf("%sZ", modified)
 		}
