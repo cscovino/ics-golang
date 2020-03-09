@@ -514,7 +514,6 @@ func (p *Parser) parseTimeField(fieldName string, eventData string) (time.Time, 
 		if !strings.Contains(modified, "Z") {
 			modified = fmt.Sprintf("%sZ", modified)
 		}
-		fmt.Println("MODIFIED: " + modified)
 		t, _ = time.Parse(IcsFormatWholeDay, modified)
 	} else {
 		// event that has start hour and minute
@@ -524,10 +523,10 @@ func (p *Parser) parseTimeField(fieldName string, eventData string) (time.Time, 
 		}
 		tzID = result[2]
 		dt := result[4]
+		dt = strings.Replace(strings.Replace(dt, "\r", "", 1), "\n ", "", 1)
 		if !strings.Contains(dt, "Z") {
 			dt = fmt.Sprintf("%sZ", dt)
 		}
-		fmt.Println("MODIFIED: " + dt)
 		t, _ = time.Parse(IcsFormat, dt)
 	}
 
