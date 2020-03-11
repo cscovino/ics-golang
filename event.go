@@ -23,6 +23,7 @@ type Event struct {
 	rrule         string
 	class         string
 	id            string
+	uid           string
 	sequence      int
 	attendees     []*Attendee
 	organizer     *Attendee
@@ -78,6 +79,15 @@ func (e *Event) SetID(id string) *Event {
 
 func (e *Event) GetID() string {
 	return e.id
+}
+
+func (e *Event) SetUID(uid string) *Event {
+	e.uid = uid
+	return e
+}
+
+func (e *Event) GetUID() string {
+	return e.uid
 }
 
 func (e *Event) SetImportedID(id string) *Event {
