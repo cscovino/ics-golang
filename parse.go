@@ -574,9 +574,9 @@ func (p *Parser) parseEventRRule(eventData string) string {
 
 // parses the event LOCATION
 func (p *Parser) parseEventLocation(eventData string) string {
-	re, _ := regexp.Compile(`LOCATION:.*?\n`)
+	re, _ := regexp.Compile(`LOCATION(:|;)(.*?\n)`)
 	result := re.FindString(eventData)
-	return trimField(result, "LOCATION:")
+	return trimField(result, `LOCATION(:|;)(.*?:)?`)
 }
 
 // parses the event GEO
