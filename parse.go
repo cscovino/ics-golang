@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -203,6 +202,7 @@ func (p *Parser) parseICalContent(iCalContent, url string) {
 	ical.SetDesc(p.parseICalDesc(calInfo))
 	ical.SetVersion(p.parseICalVersion(calInfo))
 	ical.SetTimezone(p.parseICalTimezone(calInfo))
+	ical.SetOffsetTZ(p.parseEventTZOffset(eventData))
 	ical.SetUrl(url)
 
 	// parse the events and add them to ical
@@ -278,7 +278,6 @@ func (p *Parser) parseEvents(cal *Calendar, eventsData []string) {
 
 		event.SetStartTZID(startTZID)
 		event.SetEndTZID(endTZID)
-		event.SetOffsetTZ(p.parseEventTZOffset(eventData))
 		event.SetStatus(p.parseEventStatus(eventData))
 		event.SetSummary(p.parseEventSummary(eventData))
 		event.SetDescription(p.parseEventDescription(eventData))
@@ -554,18 +553,16 @@ func (p *Parser) parseEventEnd(eventData string) (time.Time, string) {
 }
 
 // parses the event offset time
-func (p *Parser) parseEventTZOffset(eventData string) []string {
-	log.Println("[EVENTDATA]: ", eventData)
+func (p *Parser) parseEventTZOffset(eventData string) string {
 	reOffset, _ := regexp.Compile(`(TZOFFSETFROM:.*?\r?\n)`)
 	result := reOffset.FindStringSubmatch(eventData)
-	log.Println("[TZOFFSET]: ", result)
 	if len(result) == 0 {
-		var res []string
-		return res
+		return ""
+	} else if len(result) == 1 {
+		return trimField(result[0], "TZOFFSETFROM:")
+	} else {
+		return trimField(result[1], "TZOFFSETFROM:")
 	}
-	result[0] = trimField(result[0], "TZOFFSETFROM:")
-	result[1] = trimField(result[1], "TZOFFSETFROM:")
-	return result
 }
 
 // parses the event duration

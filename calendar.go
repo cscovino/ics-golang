@@ -11,6 +11,7 @@ type Calendar struct {
 	name              string
 	description       string
 	url               string
+	offsetTZ          string
 	version           float64
 	timezone          time.Location
 	events            Events
@@ -76,6 +77,15 @@ func (c *Calendar) SetTimezone(tz time.Location) *Calendar {
 
 func (c *Calendar) GetTimezone() time.Location {
 	return c.timezone
+}
+
+func (c *Calendar) GetOffsetTZ() string {
+	return c.offsetTZ
+}
+
+func (c *Calendar) SetOffsetTZ(offsetTZ string) *Calendar {
+	c.offsetTZ = offsetTZ
+	return c
 }
 
 //  add event to the calendar
