@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -557,6 +558,7 @@ func (p *Parser) parseEventEnd(eventData string) (time.Time, string) {
 func (p *Parser) parseEventTZOffset(eventData string) string {
 	reOffset, _ := regexp.Compile(`TZOFFSETFROM:.*\r?\n?`)
 	result := reOffset.FindString(eventData)
+	log.Println("[TZOFFSET]: ", result)
 	if result == "" {
 		return ""
 	}
