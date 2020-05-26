@@ -555,6 +555,7 @@ func (p *Parser) parseEventEnd(eventData string) (time.Time, string) {
 
 // parses the event offset time
 func (p *Parser) parseEventTZOffset(eventData string) []string {
+	log.Println("[EVENTDATA]: ", eventData)
 	reOffset, _ := regexp.Compile(`(TZOFFSETFROM:.*?\r?\n)`)
 	result := reOffset.FindStringSubmatch(eventData)
 	log.Println("[TZOFFSET]: ", result)
