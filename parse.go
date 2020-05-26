@@ -269,7 +269,6 @@ func (p *Parser) parseEvents(cal *Calendar, eventsData []string) {
 		start, startTZID := p.parseEventStart(eventData)
 		end, endTZID := p.parseEventEnd(eventData)
 		duration := p.parseEventDuration(eventData)
-		tzOffset := p.parseEventTZOffset(eventData)
 
 		if end.Before(start) {
 			end = start.Add(duration)
@@ -279,7 +278,7 @@ func (p *Parser) parseEvents(cal *Calendar, eventsData []string) {
 
 		event.SetStartTZID(startTZID)
 		event.SetEndTZID(endTZID)
-		event.SetOffsetTZ(tzOffset)
+		event.SetOffsetTZ(p.parseEventTZOffset(eventData))
 		event.SetStatus(p.parseEventStatus(eventData))
 		event.SetSummary(p.parseEventSummary(eventData))
 		event.SetDescription(p.parseEventDescription(eventData))
@@ -555,14 +554,17 @@ func (p *Parser) parseEventEnd(eventData string) (time.Time, string) {
 }
 
 // parses the event offset time
-func (p *Parser) parseEventTZOffset(eventData string) string {
-	reOffset, _ := regexp.Compile(`TZOFFSETFROM:.*?\r?\n`)
-	result := reOffset.FindString(eventData)
+func (p *Parser) parseEventTZOffset(eventData string) []string {
+	reOffset, _ := regexp.Compile(`(TZOFFSETFROM:.*?\r?\n)`)
+	result := reOffset.FindStringSubmatch(eventData)
 	log.Println("[TZOFFSET]: ", result)
-	if result == "" {
-		return ""
+	if len(result) == 0 {
+		var res []string
+		return res
 	}
-	return trimField(result, "TZOFFSETFROM:")
+	result[0] = trimField(result[0], "TZOFFSETFROM:")
+	result[1] = trimField(result[1], "TZOFFSETFROM:")
+	return result
 }
 
 // parses the event duration
