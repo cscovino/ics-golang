@@ -202,7 +202,7 @@ func (p *Parser) parseICalContent(iCalContent, url string) {
 	ical.SetDesc(p.parseICalDesc(calInfo))
 	ical.SetVersion(p.parseICalVersion(calInfo))
 	ical.SetTimezone(p.parseICalTimezone(calInfo))
-	ical.SetOffsetTZ(p.parseEventTZOffset(eventData))
+	ical.SetOffsetTZ(p.parseEventTZOffset(calInfo))
 	ical.SetUrl(url)
 
 	// parse the events and add them to ical
