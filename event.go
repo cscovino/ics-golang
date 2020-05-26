@@ -11,6 +11,7 @@ type Event struct {
 	end           time.Time
 	startTZID     string
 	endTZID       string
+	offsetTZ      string
 	created       time.Time
 	modified      time.Time
 	alarmTime     time.Duration
@@ -70,6 +71,15 @@ func (e *Event) SetEndTZID(tzid string) {
 
 func (e *Event) GetEndTZID() string {
 	return e.endTZID
+}
+
+func (e *Event) GetOffsetTZ() string {
+	return e.offsetTZ
+}
+
+func (e *Event) SetOffsetTZ(offsetTZ string) *Event {
+	e.offsetTZ = offsetTZ
+	return e
 }
 
 func (e *Event) SetID(id string) *Event {
